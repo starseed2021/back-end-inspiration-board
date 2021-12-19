@@ -7,3 +7,6 @@ class Board(db.Model):
     title = db.Column(db.String)
     card_id = db.Column(db.Integer, db.ForeignKey("card.id"), nullable=False)
     card = db.relationship("Card", backref=backref("cards", cascade="delete"))
+
+
+    
