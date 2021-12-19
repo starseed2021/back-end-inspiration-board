@@ -1,4 +1,6 @@
 from app import db
 
-
-# THIS IS JUST A TEST TO MAKE SURE I CAN PUSH TO GITHUB.
+class Card(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    message = db.Column(db.String)
+    likes_count = db.Column(db.Integer)
