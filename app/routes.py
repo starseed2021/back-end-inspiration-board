@@ -5,6 +5,7 @@ from app.models.board import Board
 
 
 boards_bp = Blueprint("boards_bp", __name__, url_prefix="/boards")
+cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
 # BOARD ROUTES
 @boards_bp.route("", methods=["POST", "GET"])
@@ -82,39 +83,31 @@ def handle_one_board(board_id):
 
         return jsonify(board_delete_response), 200
 
-# example_bp = Blueprint('example_bp', __name__)
-# Note: the url_prefix should maybe be removed later, but I'll keep it for now 
-# for the sake of being able to test with Postman. 
-cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
-
 # --- Card routes --- # 
 
-# Get all cards 
-# Note: I think don't think we'll actually need this b/c what we'll have instead 
-# is a route that'll allow us to get all cards BY BOARD. 
-# i.e. GET - /boards/<board_id>/cards
-@cards_bp.route("", methods=["GET"])
-def cards():
-    cards = Card.query.all()
+# Get all cards by board id 
+# FINISH THIS ONE AND TEST IT! 
+@boards_bp.route("/<board_id>/cards", methods=["GET"]) 
+def cards_by_board(board_id):
+    cards = Card.query.get(board_id)
     cards_response = [card.to_json() for card in cards]
     return jsonify(cards_response), 200
 
-# Add a card 
-# Note: Again, I think this should actually be a route undder board since we'd 
-# only had a card to a PARTICULAR BOARD. 
-# i.e. POST - /boards/<board_id>/cards
-@cards_bp.route("", methods=["POST"])
+# Add a card to a particular board (will be based on front-end event!)
+@boards_bp.route("/<board_id>/cards", methods=["POST"])
 def add_card():
-    request_data = request.get_json()
-    card = Card(
-        message = request_data['message'],
-        likes_count = 0
-    )
-    db.session.add(card)
-    db.session.commit()
+    pass 
+    # request_data = request.get_json()
+    # card = Card(
+    #     message = request_data['message'],
+    #     likes_count = 0
+    # )
+    # db.session.add(card)
+    # db.session.commit()
 
-    return jsonify(card.to_json()), 201
+    # return jsonify(card.to_json()), 201
 
+# CARDS ROUTES 
 # Update a card's likes_count 
 # ######## FINISH THIS ONE ######### 
 # @cards_bp.route("/<card_id>/add_like", methods=["PUT"])
