@@ -17,7 +17,6 @@ def handle_boards():
         new_board = Board(
             owner_name=board_request_body["owner_name"],
             title=board_request_body["title"],
-            # card_id=board_request_body["card"]
         )
 
         db.session.add(new_board)
@@ -83,51 +82,62 @@ def handle_one_board(board_id):
 
         return jsonify(board_delete_response), 200
 
-# --- Card routes --- # 
-
 # Get all cards by board id 
-# FINISH THIS ONE AND TEST IT! 
 @boards_bp.route("/<board_id>/cards", methods=["GET"]) 
 def cards_by_board(board_id):
-    cards = Card.query.get(board_id)
+    cards = Card.query.filter_by(board_id=board_id)
     cards_response = [card.to_json() for card in cards]
     return jsonify(cards_response), 200
 
-# Add a card to a particular board (will be based on front-end event!)
+# Add a card to a particular board 
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
-def add_card():
-    pass 
-    # request_data = request.get_json()
-    # card = Card(
-    #     message = request_data['message'],
-    #     likes_count = 0
-    # )
-    # db.session.add(card)
-    # db.session.commit()
+def add_card(board_id):
+    request_data = request.get_json()
+    card = Card(
+        message = request_data['message'],
+        likes_count = 0,
+        board_id = board_id
+    )
+    db.session.add(card)
+    db.session.commit()
 
-    # return jsonify(card.to_json()), 201
+    return card.to_json(), 200
 
-# CARDS ROUTES 
-# Update a card's likes_count 
-# ######## FINISH THIS ONE ######### 
-# @cards_bp.route("/<card_id>/add_like", methods=["PUT"])
-# def increment_card_likes_count(card_id):
-#     card = Card.query.get(card_id)
+# CARD ROUTES
 
-#     # add one to the count for this card
-#     # do here 
+# Get all cards
+# Note: this is only for testing purposes in Postman; the FE will never call it.
+@cards_bp.route("", methods=["GET"])
+def cards():
+    cards = Card.query.all()
+    cards_response = [card.to_json() for card in cards]
+    return jsonify(cards_response), 200
 
-#     # commit it to DB 
-#     db.session.commit()
+# Get one card 
+# Note: this is also just for testing purposes in Postman; the FE will never call it.
+@cards_bp.route("/<card_id>", methods=["GET"])
+def card(card_id):
+    card = Card.query.get(card_id)
+    return card.to_json(), 200
 
-    return jsonify(card.to_json()),200
-
-# Delete a card 
+# Delete one card (some FE event handler should use this)
 @cards_bp.route("/<card_id>", methods=["DELETE"])
-def increment_card_likes_count(card_id):
+def delete_card(card_id):
     card = Card.query.get(card_id)
 
     db.session.delete(card)
     db.session.commit()
 
     return f"Card {card_id} has been deleted.", 200
+
+# Update a card's likes_count (some FE event handler should use this)
+@cards_bp.route("/<card_id>/add_like", methods=["PUT"])
+def increment_likes(card_id):
+    card = Card.query.get(card_id)
+    if card is None:
+        return make_response("", 400)
+
+    card.likes_count += 1
+    db.session.commit()
+
+    return card.to_json(), 200
