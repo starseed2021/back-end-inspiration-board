@@ -64,8 +64,7 @@ def handle_one_board(board_id):
             return jsonify(None), 400
 
         board.owner_name=board_update_request_body["owner_name"],
-        board.title=board_update_request_body["title"],
-        # board.card_id=board_update_request_body["card_id"]
+        board.title=board_update_request_body["title"]
 
         db.session.commit()
 
