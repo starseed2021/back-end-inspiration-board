@@ -35,19 +35,6 @@ def handle_boards():
         else:
             boards = Board.query.all()
 
-
-        # STRETCH GOAL : SORT QUERIES
-        sort_query = request.args.get("sort")
-        if sort_query == "asc":
-            boards = Board.query.order_by(Board.title.asc())
-            boards = Board.query.order_by(Board.owner_name.asc())
-        elif sort_query == "desc":
-            boards = Board.query.order_by(Board.title.desc())
-            boards = Board.query.order_by(Board.owner_name.desc())
-        else:
-            boards = Board.query.all()
-            
-
         board_response = [board.get_board_response() for board in boards]
 
         if board_response == []:
@@ -76,8 +63,7 @@ def handle_one_board(board_id):
             return jsonify(None), 400
 
         board.owner_name=board_update_request_body["owner_name"],
-        board.title=board_update_request_body["title"],
-        # board.card_id=board_update_request_body["card_id"]
+        board.title=board_update_request_body["title"]
 
         db.session.commit()
 
