@@ -82,14 +82,14 @@ def handle_one_board(board_id):
 
         return jsonify(board_delete_response), 200
 
-# Get all cards by board id 
+# Get all cards by board id (some FE event handler should use this)
 @boards_bp.route("/<board_id>/cards", methods=["GET"]) 
 def cards_by_board(board_id):
     cards = Card.query.filter_by(board_id=board_id)
     cards_response = [card.to_json() for card in cards]
     return jsonify(cards_response), 200
 
-# Add a card to a particular board 
+# Add a card to a particular board (some FE event handler should use this)
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def add_card(board_id):
     request_data = request.get_json()
