@@ -15,7 +15,7 @@ def handle_boards():
         new_board = Board(
             owner_name=board_request_body["owner_name"],
             title=board_request_body["title"],
-            card_id=board_request_body["card"]
+            # card_id=board_request_body["card"]
         )
 
         db.session.add(new_board)
@@ -64,7 +64,7 @@ def handle_one_board(board_id):
 
         board.owner_name=board_update_request_body["owner_name"],
         board.title=board_update_request_body["title"],
-        board.card_id=board_update_request_body["card_id"]
+        # board.card_id=board_update_request_body["card_id"]
 
         db.session.commit()
 

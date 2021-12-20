@@ -5,7 +5,7 @@ class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     owner_name = db.Column(db.String)
     title = db.Column(db.String)
-    card_id = db.Column(db.Integer, db.ForeignKey("card.id"), nullable=False)
+    card_id = db.Column(db.Integer, db.ForeignKey("card.id"), nullable=True)
     card = db.relationship("Card", backref=backref("cards", cascade="delete"))
 
 
@@ -16,5 +16,5 @@ class Board(db.Model):
             "id": self.id,
             "owner_name": self.owner_name,
             "title": self.title,
-            "card_id": self.card_id
+            # "card_id": self.card_id
         }  
