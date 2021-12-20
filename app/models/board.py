@@ -10,3 +10,11 @@ class Board(db.Model):
 
 
     
+    # RETURNS RESPONSE BODY
+    def get_board_response(self):
+        return {
+            "id": self.id,
+            "owner_name": self.owner_name,
+            "title": self.title,
+            "card_id": self.card_id
+        }  
