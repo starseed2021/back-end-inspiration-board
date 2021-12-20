@@ -35,6 +35,19 @@ def handle_boards():
         else:
             boards = Board.query.all()
 
+
+        # STRETCH GOAL : SORT QUERIES
+        sort_query = request.args.get("sort")
+        if sort_query == "asc":
+            boards = Board.query.order_by(Board.title.asc())
+            boards = Board.query.order_by(Board.owner_name.asc())
+        elif sort_query == "desc":
+            boards = Board.query.order_by(Board.title.desc())
+            boards = Board.query.order_by(Board.owner_name.desc())
+        else:
+            boards = Board.query.all()
+            
+
         board_response = [board.get_board_response() for board in boards]
 
         if board_response == []:
