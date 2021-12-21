@@ -43,7 +43,7 @@ def test_get_boards_three_saved_boards(client, three_boards):
         }
 
 
-def test_create_board_no_saved_cards(client):
+def test_create_board(client):
     # Act
     response = client.post("/boards", json={
         "owner_name": "Example owner",
