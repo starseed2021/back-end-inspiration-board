@@ -6,8 +6,6 @@ class Board(db.Model):
     owner_name = db.Column(db.String)
     title = db.Column(db.String)
 
-
-    
     # RETURNS RESPONSE BODY
     def get_board_response(self):
         return {

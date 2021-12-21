@@ -55,7 +55,7 @@ def handle_one_board(board_id):
         return jsonify({"Message": f"Board {board_id} was not found"}), 404
     
     if request.method == "GET":
-        return jsonify(board.get_board_resonse()), 200
+        return jsonify(board.get_board_response()), 200
 
     elif request.method == "PUT":
         board_update_request_body = request.get_json()
@@ -120,17 +120,21 @@ def cards():
 @cards_bp.route("/<card_id>", methods=["GET"])
 def card(card_id):
     card = Card.query.get(card_id)
+    if not card: 
+        return make_response("", 404)
     return card.to_json(), 200
 
 # Delete one card (some FE event handler should use this)
 @cards_bp.route("/<card_id>", methods=["DELETE"])
 def delete_card(card_id):
     card = Card.query.get(card_id)
+    if not card: 
+        return make_response("", 404)
 
     db.session.delete(card)
     db.session.commit()
 
-    return f"Card {card_id} has been deleted.", 200
+    return card.to_json(), 200
 
 # Update a card's likes_count (some FE event handler should use this)
 @cards_bp.route("/<card_id>/add_like", methods=["PUT"])
