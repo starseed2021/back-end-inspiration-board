@@ -92,6 +92,9 @@ def cards_by_board(board_id):
 @boards_bp.route("/<board_id>/cards", methods=["POST"])
 def add_card(board_id):
     request_data = request.get_json()
+    if len(request_data['message']) > 40 or len(request_data['message']) == 0: 
+        return make_response("Your message must be between 1 and 40 characters.", 400) 
+
     card = Card(
         message = request_data['message'],
         likes_count = 0,
